@@ -1,0 +1,70 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Sign-Up </title>
+    <link rel="stylesheet" href="{% static 'poll/css/signup_sheet.css' %}">>
+
+    <script src="https://kit.fontawesome.com/b3c82137d2.js" crossorigin="anonymous"></script>
+
+</head>
+<body>
+
+    {% load widget_tweaks %}
+
+    <form action="" method="POST">
+
+        {% csrf_token %}
+
+        <div class="login-box">
+            <h1>Sign Up</h1>
+
+            <div class="textbox" style="border-bottom: 1px solid orange;">
+                <label for="uname"> <i class="fa fa-user" aria-hidden="true"></i> </label>
+                {% render_field form.username placeholder="Write a Username" id="uname" %}
+            </div>
+
+                <!-- For Username Error` -->
+            {% if form.username.errors %}
+                <p style="width: 400px;"> &bull; Invalid Username. Required 150 characters or fewer. </p>
+                <p style="margin-top: 1px;"> &bull; Letters, digits and @/./+/-/_ only. </p>
+            {% endif %}
+
+            <div class="textbox" style="border-bottom: 1px solid white;">
+                <label for="e-mail"> <i class="fa fa-user" aria-hidden="true"></i> </label>
+                <input type="email" name="email" id="e-mail" placeholder="Your E-mail">
+            </div>
+            
+            <div class="textbox" style="border-bottom: 1px solid green;">
+                <label for="upass1"> <i class="fa fa-lock" aria-hidden="true"></i> </label>
+                {% render_field form.password1 placeholder="Create Password" id="upass1" %}
+            </div>
+
+            {% if form.password1.error %}
+                <p> &bull; Password1 Error. </p>
+            {% endif %}
+
+            <div class="textbox" style="border-bottom: 1px solid green;">
+                <label for="upass2"> <i class="fa fa-lock" aria-hidden="true"></i> </label>
+                {% render_field form.password2 placeholder="Re-enter Password" id="upass2" %}
+            </div>
+
+                <!-- For "Passwords Do Not Match" Error -->
+            {% if form.password2.errors %}
+                <p style="width: 400px;"> &bull; The above two Passwords do not Match. </p>
+            {% endif %}
+
+            <input class="btn" type="submit" name="" value="Sign in">
+
+            <div class="foot">
+                <small> Have an account? <a href="{% url 'login' %}"> Log in </a> Here. </small>
+            </div>
+
+        </div>
+
+    </form>
+</body>
+</html>

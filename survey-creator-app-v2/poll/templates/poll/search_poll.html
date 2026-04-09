@@ -1,0 +1,112 @@
+{% extends 'BASE.html' %}
+
+{% load custom_template_tags %}
+
+{% block title %} Search Poll {% endblock %}
+
+{% block content %}
+
+<br>
+<h2 style="text-align: center; text-decoration: underline;"> Search Results for <span style="color: blue; font-style:italic;">"{{ search }}"</span> </h2>
+
+<section>
+    <div class="header" style="background-color: #5bc0de;">
+        <table class="table table-bordered table-fixed">
+            <thead>
+                <tr style="box-shadow: 0 10px 15px orange;">
+                    <th>
+                        {% if poll %}   
+
+                            {% with var_count=0 %}                                                                                                                     
+
+                                {% for p in poll %}
+                                    {{ var_count|increment }}                                    
+                                {% endfor %}
+                                
+                                {% if var_count|count %}
+                                    <span> Matched Polls Results </span>
+                                {% else %}
+                                    <span> Matched Poll Result </span>
+                                {% endif %}
+
+                            {% endwith %}
+
+                        {% else %}
+                            <span> Matched Poll Result </span>
+                        {% endif %}
+                    </th>                    
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+    <div class="content">
+        <table class="table table-borderless table-hover">
+            <tbody>
+                {% if poll %}                
+                {% for p in poll reversed %}
+                <tr>
+                    <td style="float: left; padding-left: 14px;">
+                        <div style="width: 496px;">
+                            <!-- <a href="{% url 'vote' p.poll_id %}" style="color: black;"> {{ p.question|upper_first_letter|highlight_search }} </a>                             -->
+
+                            <a href="{% url 'vote' p.poll_id %}" style="color: black;">
+
+                                {% for q in p.question|upper_first_letter|add_ques_mark|split_string %}
+                                    {% if q|highlight_search %}
+                                        <span style="background-color: yellow;"> <b><i> {{ q }} </i></b> </span>
+                                    {% else %}
+                                        {{ q }}
+                                    {% endif %}
+                                {% endfor %}
+
+                            </a>
+                            
+                            <!-- In Django Template Language (line below), don't use '{.{.}.}' for Context Variables, just use them as it like [ poll.question ] not [ {{poll.question}} ]
+                            {#% if p.question|to_str %} 
+                                ?
+                            {% endif %#} -->
+
+                        </div>
+                    </td>
+
+                    <td style="float: right; padding-left: 15px; padding-right: 20px; padding-top: 1px; padding-bottom: 1px;">
+                    <!-- <td style="padding-left: 15px;"> -->
+                        <a href="{% url 'vote' p.poll_id %}" class="btn btn-warning">View</a>
+                        <a href="{% url 'result' p.poll_id %}" class="btn btn-primary">See Results</a>
+                        <script>
+
+                            $(function () {
+                                $('.popovr').popover({
+                                  container: 'body'
+                                })
+                              })
+
+                        </script>
+
+                        {% ifequal p.user_id req_id %}
+                            
+                            <a href="{% url 'edit' p.poll_id %}" class="btn btn-secondary">Edit</a>
+                            <a href="{% url 'delete' p.poll_id %}" class="btn btn-danger">Delete Poll</a>                        
+
+                        {% else %}
+
+                            <a tabindex="0" class="btn btn-secondary popovr" role="button" data-toggle="popover" data-trigger="focus" title="Not Allowed!" data-content="You are not Authorized to do this Action. You aren't the Owner of this Poll." data-placement="top">Edit</a>
+                            <a tabindex="0" class="btn btn-danger popovr" role="button" data-toggle="popover" data-trigger="focus" title="Not Allowed!" data-content="You are not Authorized to do this Action. You aren't the Owner of this Poll." data-placement="top">Delete Poll</a>
+
+                        {% endifequal %}
+                    </td>
+                </tr>
+                {% endfor %}
+
+                {% else %}
+
+                <p style="text-align: center; margin-top: 100px;"> <strong> No Matched Results Found! </strong> </p>
+
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+{% endblock content %}

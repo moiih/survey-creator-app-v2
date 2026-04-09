@@ -1,0 +1,30 @@
+{% extends 'BASE.html' %}
+
+{% block title %} Login {% endblock %}
+
+{% block content %}
+
+<br>
+<div class="container">
+
+    <form action="" class="jumbotron form-group" method="POST">
+        
+        <h2> Log - In </h2>
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <input type="submit" class="btn btn-success" value="Login">
+
+        {% if messages %}
+        {% for mg in messages %}
+            <small> {{ mg }} </small>
+        {% endfor %}
+        {% endif %}
+
+    </form>
+
+</div>
+
+{% endblock content %}

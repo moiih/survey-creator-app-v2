@@ -1,0 +1,41 @@
+{% extends 'BASE.html' %}
+
+{% block title %} SignUp {% endblock %}
+
+{% block content %}
+
+<br>
+<div class="container">
+    <form action="" method="POST" class="jumbotron form-group">
+
+        <h2
+            style="text-align: left; text-decoration: underline; margin-top: 30px; margin-bottom: 50px; font-style: italic; font-size: 30px;">
+            Sign - Up
+        </h2>
+
+        <hr class="my-4">
+
+        {% csrf_token %}
+        {#{ form.as_p }#}
+        {% for fm in form %}
+            {{ fm.label_tag }}  {{ fm }}  {{ fm.errors|striptags }} 
+        {% endfor %}
+
+        {#{ form.username.label_tag }} {{ form.username }} {{ form.username.errors|striptags }#}
+        {#{ form.password1.label_tag }} {{ form.password1 }} {{ form.password1.errors|striptags }#}
+        {#{ form.password2.label_tag }} {{ form.password2 }} {{ form.password2.errors|striptags }#}
+        
+
+        <input type="submit" class="btn btn-primary" value="SignUp">
+
+        {% if messages %}
+        {% for mg in messages %}
+            <small {% if mg.tags %} class="{{ mg.tags }}" {% endif %}> {{ mg }} </small>
+        {% endfor %}
+        {% endif %}
+
+    </form> 
+</div>
+
+
+{% endblock content %}

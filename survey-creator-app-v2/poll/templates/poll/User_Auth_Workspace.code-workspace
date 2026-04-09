@@ -1,0 +1,27 @@
+{
+	"folders": [
+		{
+			"path": "C:\\Users\\Acer\\Envs\\test2\\Lib\\site-packages\\django\\contrib\\auth"
+		},
+		{
+			"path": "..\\..\\..\\.."
+		}
+	],
+	"settings": {
+		"sqltools.connections": [
+			{
+				"mysqlOptions": {
+					"authProtocol": "default"
+				},
+				"previewLimit": 100,
+				"server": "localhost",
+				"port": 3306,
+				"driver": "MySQL",
+				"name": "mysql",
+				"database": "mohitdb",
+				"username": "mohit",
+				"password": "mohit#@6023"
+			}
+		]
+	}
+}

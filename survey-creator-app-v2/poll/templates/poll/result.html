@@ -1,0 +1,53 @@
+{% extends 'BASE.html' %}
+
+{% block title %} Poll Result {%  endblock %}
+
+{% block content %}
+
+<br>
+<br>
+<div class="container col-4 offset-4">
+    <div class="panel panel-default" style="box-shadow: 4px 5px 10px 1px rgb(0,0,0); border-radius: 12px;">
+        <div class="panel-heading">
+            <h2 class="btn btn-primary col-md-12" style="font-size: 30px; cursor: none;" style="width: 100%;"> Result </h2>
+        </div>
+
+        <div class="panel-body">
+            <ul
+                style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; font-size: 30px; margin-left: 30px;">
+                <li>
+                    {{ poll.option_one }} &mdash; {{ poll.option_one_count }}
+                </li>
+
+                <li>
+                    {{ poll.option_two }} &mdash; {{ poll.option_two_count }}
+                </li>
+
+                <li>
+                    {{ poll.option_three }} &mdash; {{ poll.option_three_count }}
+                </li>
+
+                {% if poll.state_option_four %}
+                    <li style="font-size: 30px;">
+                        None Of The Above &mdash; {{ poll.option_four_nota_count }}
+                    </li>
+                {% endif %}
+            </ul>
+
+            <hr class="my-3" style="width: 450px;">
+
+            <div>
+                <strong style="font-size: larger; margin-left: 10px;"> Total votes casted &mdash; {{ poll.total }}
+                </strong>
+            </div>
+            <br>
+
+            <div>
+                <a href="{% url 'vote' poll.poll_id %}" class="btn btn-md btn-success" style="margin: 0px 0px 20px 23px;">Cast
+                    Your Vote In This Poll!</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,52 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF_8">
+    <meta name="viewport" content="width=divice-width, initial-scale=1.0">
+    <title> Log-in </title>
+    <link rel="stylesheet" href="{% static 'poll/css/login_sheet.css' %}">
+    
+    <script src="https://kit.fontawesome.com/b3c82137d2.js" crossorigin="anonymous"></script>
+
+</head>
+<body>
+
+    {% load widget_tweaks %}        
+
+        <div class="main-login-box">
+            <h1>Log in</h1>
+        
+        <form action="" method="POST">
+
+            {% csrf_token %}
+            
+            <!-- For Error Message if User Credentials are not Valid -->
+            {% if form.errors %}
+                <p> &bull; Username or Password Not Correct. </p>                
+            {% endif %}
+
+            <div class="login-field">
+                <label for="unm"> <i class="fa fa-user" aria-hidden="true"></i> </label>
+                {% render_field form.username placeholder="Username" id="unm" %}                
+            </div>
+
+            <div class="login-field">
+                <label for="pwd"> <i class="fa fa-lock" aria-hidden="true"></i> </label>
+                {% render_field form.password placeholder="Password" id="pwd" %}
+            </div>
+            
+            <div class="btn">
+                <input type="submit" name="" value="Login">
+            </div>
+
+            <div class="foot">
+                <small> Don't have an account? <a href="{% url 'signup' %}"> SignUp </a> Here. </small>
+            </div>
+        
+        </form>
+
+        </div>    
+</body>
+</html>

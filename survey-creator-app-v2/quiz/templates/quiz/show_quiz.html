@@ -1,0 +1,253 @@
+{% extends 'BASE.html' %}
+
+{% block title %} Q&A Page {% endblock title %}
+
+{% load quiz_custom_template_tags %}
+
+{% block quiz_content %}
+
+<!-- <br><br> -->
+<!-- <h1 id="topper">Coming Soon...</h1> -->
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+<script type="text/javascript">
+    function googleTranslateElementInit(jhvhj) {
+        //$('.goog-te-banner').css('display', 'block');        
+        //$('.skiptranslate goog-te-gadget').('display', 'block');                
+      new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'show_quiz_head_title');      
+    }
+    //$('.goog-te-banner').css('display', 'block');
+    //$('.skiptranslate goog-te-gadget').('display', 'block');                
+    $('iframe').css('diaplay', 'block');
+    $('table').hide();
+    
+    //alert($('html').attr('lang'));
+</script>
+        
+
+
+        
+        
+        <!-- ######  Big Image Modal  ###### -->
+
+        <div class="container">
+
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" style="margin-left: 380px;">
+                <div class="modal-content" 
+                    style="background: rgba( 255, 255, 255, 0.30 );
+                            box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+                            backdrop-filter: blur( 5.5px );
+                            -webkit-backdrop-filter: blur( 5.5px );
+                            border-radius: 10px;                        
+                            border: 1px solid rgba( 255, 255, 255, 0.18 );
+                            width: 800px;
+                            height: 400px;
+                            padding-bottom: 678px;
+                ">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel" style="font-size: 23px;">
+                        <i class="fas fa-window-maximize"></i> Quiz Image Window
+                    </h5>
+                    <button type="button" class="close btn btn-danger" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <div id="enlarge_Img">
+                            <img id="big_Img" src="" height="510px" width="770px" alt="">            
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" style="background-color: none;" data-dismiss="modal">Close</button>                
+                    </div>
+                </div>
+                </div>
+            </div>
+            
+        </div>
+
+
+    
+        {% if show_quiz %}
+
+            {% if messages %}
+                    
+                {% for message in messages %}
+                    <!-- <strong id="msg" style="color: orangered; text-decoration: orangered underline; background-color: yellow; margin-left: 575px; margin-bottom: 160px; font-size: larger; border: 3px solid blue; border-radius: 10px; padding: 8px;"> {{ message }} </strong> -->
+                    <div onclick="hide_message()" id="quiz_msg" style="margin-top: 40px; margin-left: 527px; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; font-weight: bold; font-size: 24px;">
+                        <span style="border: 3px solid black; background-color: red; border-radius: 5px; padding: 10px; padding-left: 20px; padding-right: 20px; color: white;"> {{ message }} </span>
+                    </div>                            
+
+                    <script>
+                        //$("#msg").fadeIn(2000);
+                        setTimeout(function() { $('#quiz_msg').slideUp(1000); }, 3000);                
+
+                        function hide_message() {
+                            $('#quiz_msg').slideUp(500);
+                        }
+                    </script>
+
+                {% endfor %}
+                
+            {% endif %}
+
+            <!-- <div style="position: absolute; width: 100%; height: 100%; background: black;"></div> -->
+
+        <br><br>
+        <div class="container col-4 offset-4">
+            <div class="header panel-heading"> 
+                <h2 id="show_quiz_head_title" style="text-align: center; margin-left: 0px; margin-top: auto;"> Quiz Title : {{ title }} </h2>
+            </div>
+
+        <form action="" method="POST">
+             {% csrf_token %}
+            {% for q in show_quiz %}
+            
+            <div class="content panel panel-default form-control highlight_field_show_quiz" style="height: fit-content; box-shadow: 4px 5px 10px 1px rgb(0,0,0); border-radius: 12px; color: white; background-color: black;">            
+                <div class="panel-body" style="text-align: center; margin-bottom:7px; margin-top: 8px;">
+                    
+                    {% if q.image %}
+                            <!-- Button trigger modal -->        
+                        <img src="{{ q.image.url }}" class="myQuiz_Img" id="img_{{ forloop.counter }}" onclick="show_big_image(this.id)" alt="Quiz Image" height="150" width="200" style="border: 2px solid white; margin-top: 10px; cursor: pointer;" data-toggle="modal" data-target="#exampleModal"/> <br>
+                        
+                        <script>                              
+                            //console.log('Image Clicked');
+                            function show_big_image(curr_img_id) {
+                                //alert(curr_img_id);
+                                var bImg = $('#'+curr_img_id).attr('src');
+                                //alert(bImg);
+                                $('#big_Img').attr("src", bImg);
+                                $('#enlarge_Img').show();
+                            }
+                        </script>
+                    {% endif %}                                            
+                    
+                    
+                    {% if q.question %}
+                        <p id="ques" style="margin-top: 6px;"> {{ forloop.counter }}. {{ q.question|upper_first_letter|add_ques_mark }} </p>
+                    {% else %}
+                        <p id="ques" style="margin-top: 6px;"> {{ forloop.counter }}. Observer the image carefully to answer this question. </p>
+                    {% endif %}         
+                    
+                    <hr class="my-4" style="border-top: 1px solid white; width: 100px;">
+
+                    
+                    {% if q.option_one %}                                            
+                                
+                        {% if q.option_one %}                                                
+                        <input type="radio" class="options_lefting" id="{{ q.option_one }}" name="{{ q.id }}" value="option1"/> &nbsp;
+                        <label for="{{ q.option_one }}" class="labels_lefting"> {{ q.option_one }} </label> <br>
+                        {% endif %}                    
+
+                        {% if q.option_two %}                        
+                        <input type="radio" class="options_lefting" id="{{ q.option_two }}" name="{{ q.id }}" value="option2"/> &nbsp;
+                        <label for="{{ q.option_two }}" class="labels_lefting"> {{ q.option_two }} </label> <br>
+                        {% endif %}                    
+                        
+                        {% if q.option_three %}
+                            <input type="radio" class="options_lefting" id="{{ q.option_three }}" name="{{ q.id }}" value="option3"/>
+                            <label for="{{ q.option_three }}" class="labels_lefting"> {{ q.option_three }} </label> <br>
+                        {% endif %}                            
+
+                        {% if q.option_four %}
+                            <input type="radio" class="options_lefting" id="{{ q.option_four }}" name="{{ q.id }}" value="option4"/>
+                            <label for="{{ q.option_four }}" class="labels_lefting"> {{ q.option_four }} </label> <br>
+                        {% endif %}                            
+
+                        {% if q.option_five %}
+                            <input type="radio" class="options_lefting" id="{{ q.option_five }}" name="{{ q.id }}" value="option5"/>
+                            <label for="{{ q.option_five }}" class="labels_lefting"> {{ q.option_five }} </label> <br>
+                        {% endif %}                            
+
+                        {% if q.option_six %}
+                            <input type="radio" class="options_lefting" id="{{ q.option_six }}" name="{{ q.id }}" value="option6"/>
+                            <label for="{{ q.option_six }}" class="labels_lefting"> {{ q.option_six }} </label> <br>
+                        {% endif %}   
+
+                        <!-- <p style="margin-bottom: 0px;"></p> -->
+                        <br style="margin-bottom: 0px;">
+                        
+                    {% else %}
+
+                        <!-- (Text Response) -->
+                        <!-- <label for="{{ q.id }}" style="float: left; margin-left: 23px;"> Describe Your Response Here: </label> <br> -->
+                        <!-- <input class="form-control" type="text" name="text_response" id="txt"/> -->
+                        <textarea name="{{ q.id }}" id="{{ q.id }}" style="margin-left: 20px;" class="form-control col-11" rows="3" placeholder="Describe Your Response Here. . . ."></textarea>
+                        <br>
+
+                    {% endif %}                    
+
+                </div>                
+            </div>
+            <br>        
+            
+            {% endfor %}   
+            
+            <br>
+            <input             
+                type="submit" 
+                class="btn btn-primary click-pop" 
+                style="
+                    margin-left: 210px; 
+                    box-shadow: 2.5px 5px 10px 0px black;
+                "
+                value="Submit"
+            />
+
+        </form>
+        </div>                    
+        <br> <br>
+        
+    {% endif %}    
+
+
+
+<!-- <script>
+
+    var width = 100;
+    var difference = 2;
+    var intervalID = 0;
+
+    function increase() {
+        clearInterval(intervalID);
+        intervalID = setInterval(expand, 20);        
+    }
+    function decrease() {
+        clearInterval(intervalID);
+        intervalID = setInterval(shink, 20);
+    }
+
+    function expand() {
+        if ( width<200 ) {
+            width = width + difference;
+            document.getElementById("myCard").style.width = 400;
+        }
+        else {
+            clearInterval(intervalID);
+        }
+
+        //alert("Hello!!");
+
+        /*if ( document.getElementById("myCard").style.width == 100 ) {
+            document.getElementById("myCard").style.width = 300;
+            document.getElementById("myCard").style.height = 300;
+        }*/
+    }
+    function shrink() {
+        if ( width>200 ) {
+            width = width - difference;
+            document.getElementById("myCard").style.width = 400;            
+        }
+        else {
+            clearInterval(intervalID);
+        }
+    }
+
+</script> -->
+
+    
+{% endblock quiz_content %}

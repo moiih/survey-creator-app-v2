@@ -1,0 +1,65 @@
+{% extends 'BASE.html' %}
+
+{% load custom_template_tags %}
+
+{% block title %} Survey Home {% endblock %}
+
+{% block content %}
+
+<section >
+    <div class="header">
+        <table class="table table-bordered table-fixed">
+            <thead>
+            <tr>
+                <th style="margin-left: 250px; margin-right: 195px; margin-top: 7px; margin-bottom: 7px;"> Poll Title </th>
+                <th style="margin-left: 150px; margin-right: 150px; margin-top: 7px; margin-bottom: 7px;"> Actions </th>                
+            </tr>
+            </thead>
+        </table>        
+    </div>
+
+    <div class="content">
+        
+        {% if poll %}
+
+        <table class="table table-borderless table-hover">
+            <tbody>
+            {% for p in poll reversed %}
+                <tr>
+                    <td style="float: left; padding-left: 14px; padding-top: 16px; padding-bottom: 17px;">
+                        <div style="width: 470px;">
+                            <a href="{% url 'vote' p.poll_id %}" style="color: black;"> <p> {{ p.question|upper_first_letter|add_ques_mark }} </p> </a>
+
+                            <!-- In Django Template Language (line below), don't use '{.{.}.}' for Context Variables, just use them as it like [ poll.question ] not [ {{poll.question}} ]
+                            {#% if p.question|to_str %} 
+                                ?
+                            {% endif %#} -->
+                        </div>
+
+                    </td>
+
+                    <td style="float: right; padding-left: 15px; padding-right: 20px; padding-top: 11px; padding-bottom: 11px;">
+                    <!-- <td style="padding-left: 15px;"> -->
+                        <a href="{% url 'vote' p.poll_id %}" class="btn btn-warning">View</a> 
+                        <a href="{% url 'result' p.poll_id %}" class="btn btn-primary">See Results</a>
+                        <a href="{% url 'edit' p.poll_id %}" class="btn btn-secondary">Edit</a>
+                        <a href="{% url 'mydelete' p.poll_id %}" class="btn btn-danger">Delete Poll</a>                        
+                    </td>                    
+                </tr>
+            {% endfor %}
+            </tbody>
+
+            {% else %}
+
+                <p style="text-align: center; margin-top: 120px;"> <strong> <i>You Haven't Created Any Polls Yet!</i> </strong> </p>
+                <div style="text-align: center;">
+                    <a class="btn btn-primary" href="{% url 'create' %}"> Create Now! </a>
+                </div>
+
+            {% endif %}
+
+        </table>
+    </div>
+</section>
+
+{% endblock content %}

@@ -1,0 +1,41 @@
+{% extends 'BASE.html' %}
+
+{% block title %} Create Poll {% endblock %}
+
+{% block content %}
+
+<br>
+<div class="container col-6 offset-3">
+    <div class="panel panel-default" style="box-shadow: 4px 5px 10px 1px rgb(0,0,0); border-radius: 12px;">
+        <div class="panel-heading">
+            <h2 class="btn btn-primary col-md-12" style="font-size: 30px; cursor: none;" style="width: 100%;">
+                 &bull; Create Your Own Form Here &bull; </h2>
+        </div>
+
+        <div class="container" style=" margin-top: 10px;">
+            <form action="" class="form-group" method="POST" style="margin-left: 50px;">
+                {% csrf_token %}
+                 {{ form.as_p }}
+                
+
+                <!-- CSS Margin Shhorthand Trick -->
+                <!-- [" margin: TOP RIGHT BOTTOM LEFT;(TRBL)"] -->
+                <input type="submit" value="Submit" class="btn btn-md btn-success" style="margin-bottom: 20px; margin-top: 7px;">
+                <a href="{% url 'home' %}" type="button" class="btn btn-md btn-danger" style="margin: 7px 0px 20px 10px;"> 
+                    Cancel 
+                </a>
+                <br>
+
+                {% if messages %}
+                    {% for message in messages %}
+                    <strong style="color: green; margin-bottom: 10px;">
+                        {{ message }}
+                    </strong>
+                    {% endfor %}
+                {% endif %}
+            </form>
+        </div>
+    </div>
+</div>
+
+        {% endblock content %}

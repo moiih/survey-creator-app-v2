@@ -1,0 +1,133 @@
+{% extends 'BASE.html' %}
+
+{% load widget_tweaks %}
+
+{% block title %} Edit Poll {% endblock %}
+
+{% block content %}
+
+
+<br>
+<div class="container col-6 offset-3">
+    <div class="panel panel-default" style="box-shadow: 4px 5px 10px 1px rgb(0,0,0); border-radius: 12px;">
+        <div class="panel-heading">
+            <h2 class="btn btn-primary col-md-12" style="font-size: 30px; cursor: none;" style="width: 100%;"> &bull; Update Your Poll Here &bull; </h2>
+        </div>
+        <div class="container" style=" margin-top: 10px;">
+            <form action="" class="form-group" method="POST" style="margin-left: 50px;">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="ques"> Configure Poll Title: </label>
+                    {% render_field form.question id="ques" %}
+                </div>
+
+                <div class="form-group">                    
+                    <label for="op1"> Option 1: </label>
+                        {% render_field form.option_one class="form-control col-4" id="op1" %}
+                </div>
+
+                <div class="form-group">                   
+                    <label for="op2"> Option 2: </label>
+                        {% render_field form.option_two class="form-control col-4" id="op2" %}
+                </div>
+
+                <div class="form-group">
+                    
+                    <label for="op3"> Option 3: </label>
+                        {% render_field form.option_three class="form-control col-4" id="op3" %}
+                </div>
+                    
+                {% if poll.state_option_four %}
+
+                    <script>
+
+                        function condition_keep_nota() {
+
+                            var keep_nota = 
+                                document.getElementById("op4_keep");
+
+                            var new_poll = 
+                                document.getElementById("chk")
+                                
+                            if ( keep_nota.checked == false ) {
+                                new_poll.checked = true
+                            }  
+
+                        }
+
+                        function new_poll() {
+
+                            if ( document.getElementById('chk').checked == false ) {
+                                document.getElementById('op4_keep').checked = true
+                            }
+
+                        }
+
+                    </script>
+
+
+                    <div class="form-group" style="margin-top: 25px; margin-bottom: 5px;">                    
+                        <li>
+                            <label for="op4_keep"> <span> Keep "NOTA" Option </span> &colon; &nbsp; </label>
+                                {% render_field form.state_option_four class="class-group" id="op4_keep" onclick="condition_keep_nota()" %}                        
+                        </li>                        
+                    </div>                    
+                    
+                {% else %}
+
+                    <script>
+                        
+                        function condition_add_nota() {
+                           
+                            var add_nota = 
+                                document.getElementById('op4_add')
+
+                            if ( add_nota.checked == true ) {
+                                document.getElementById('chk').checked = true
+                            }
+                            
+                        }
+
+                        function new_poll() {
+
+                            if ( document.getElementById('chk').checked == false ) {
+                                document.getElementById('op4_add').checked = false
+                            }
+
+                        }
+
+                    </script>
+                    
+                    <div class="form-group" style="margin-top: 25px; margin-bottom: 5px;"> 
+                        <li>
+                            <label for="op4_add"> <span> Add "NOTA" Option </span> &colon; &nbsp; </label>
+                                {% render_field form.state_option_four class="class-group" id="op4_add" onclick="condition_add_nota()" %}
+                        </li>
+                    </div>
+
+                {% endif %}
+   
+
+                 <label for="chk"> <small style="margin-right: 3px;"> <b> Do you want to contine it as a new Poll? </b> </small> </label>                    
+                    <input type="checkbox" id="chk" value="1" name="chkbox" onclick="new_poll()">
+                
+                <input type="submit" value="Submit" class="btn btn-md btn-success" style="margin-bottom: 25px; margin-top: 13px; margin-left: 3px;">
+                <a href="{% url 'home' %}" type="button" class="btn btn-md btn-danger" style="margin: 13px 0px 25px 10px;"> 
+                    Cancel 
+                </a>
+                <br>
+
+                {% if messages %}
+                    {% for message in messages %}
+                    <strong style="color: green; margin-bottom: 10px;">
+                        {{ message }}
+                    </strong>
+                    {% endfor %}
+                {% endif %}
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

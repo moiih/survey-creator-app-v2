@@ -1,0 +1,108 @@
+{% extends 'BASE.html' %}
+
+{% load custom_template_tags %}
+
+{% block title %} Survey Home {% endblock %}
+
+{% block content %}
+
+<section >
+    <div class="header">
+        <table class="table table-bordered table-fixed">
+            <thead>
+            <tr>
+                <th style="margin-left: 250px; margin-right: 195px; margin-top: 7px; margin-bottom: 7px;"> Poll Titles </th>
+                <th style="margin-left: 150px; margin-right: 150px; margin-top: 7px; margin-bottom: 7px;"> Actions </th>                
+            </tr>
+            </thead>
+        </table>        
+    </div>
+
+    <div class="content">
+        
+        {% if poll %}
+
+        <table class="table table-borderless table-hover">
+            <tbody>
+            {% for p in poll reversed %}
+                <tr>
+                    <td style="float: left; padding-left: 14px; padding-top: 16px; padding-bottom: 17px;">
+                        <div style="width: 470px;">
+                            <a href="{% url 'vote' p.poll_id %}" style="color: black;"> <p> {{ p.question|upper_first_letter|add_ques_mark }} </p> </a>
+
+                            <!-- In Django Template Language (line below), don't use '{.{.}.}' for Context Variables, just use them as it like [ poll.question ] not [ {{poll.question}} ]
+                            {#% if p.question|to_str %} 
+                                ?
+                            {% endif %#} -->
+                        </div>
+
+                    </td>
+
+                    <td style="float: right; padding-left: 15px; padding-right: 20px; padding-top: 11px; padding-bottom: 11px;">
+                    <!-- <td style="padding-left: 15px;"> -->
+                        <a href="{% url 'vote' p.poll_id %}" class="btn btn-warning">View</a> 
+                        <a href="{% url 'result' p.poll_id %}" class="btn btn-primary">See Results</a>                        
+
+                        <script>
+
+                            $(function () {
+                                $('.popovr').popover({
+                                  container: 'body'
+                                })
+                              })
+
+                        </script>
+
+                        {% ifequal p.user_id req_id %}
+                            
+                            <a href="{% url 'edit' p.poll_id %}" class="btn btn-secondary">Edit</a>
+                            <a href="{% url 'delete' p.poll_id %}" class="btn btn-danger">Delete Poll</a>                        
+
+                        {% else %}
+                                                    
+                            <a tabindex="0" class="btn btn-secondary popovr" role="button" data-toggle="popover" data-trigger="focus" title="Not Allowed!" data-content="You are not Authorized to do this Action. You aren't the Owner of this Poll." data-placement="top">Edit</a>
+                            <a tabindex="0" class="btn btn-danger popovr" role="button" data-toggle="popover" data-trigger="focus" title="Not Allowed!" data-content="You are not Authorized to do this Action. You aren't the Owner of this Poll." data-placement="top">Delete Poll</a>                            
+
+                        {% endifequal %}
+                    </td>                    
+                </tr>
+            {% endfor %}
+            </tbody>
+
+            {% else %}
+
+                <p style="text-align: center; margin-top: 120px; margin-bottom: 7px;"> <strong> <i>Sorry, No Polls To Display Yet!</i> </strong> </p>
+                <p style="text-align: center;"> <strong> <i>Ohh, Don't Worry...</i> </strong> </p>
+                <div style="text-align: center;">
+                    <a class="btn btn-primary" href="{% url 'create' %}"> Create Your Own Poll Here! </a>
+                </div>
+
+            {% endif %}
+
+        </table>
+    </div>
+</section>
+
+
+    <div style="position: relative; margin-top: 50px; margin-left: 530px;">
+        <a href="/quiz/get_titles/" id="survey_link" class="btn" style="width: 50%; font-weight: 600; font-size: 18px;"> <span id="survey_link_text_1">Go To Surveys..!!</span> </a>
+    </div>
+
+    <script>        
+        //console.log($('#survey_link_text_1').hover());
+        //console.log($('#survey_link_text_1').hover);
+        /*console.log($('#survey_link_text_1').html());
+        $('#survey_link').hover(function() {
+            if( $('#survey_link_text_1').html() == "Go To Surveys..!! &rarr;" ) {
+                $('#survey_link_text_1').html("Go To Surveys..!!  <b style='font-size: 20px;'>&rarr;</b>");
+            }
+            else {
+                $('#survey_link_text_1').css("transition", "all 2.0s easy-in-out");
+                $('#survey_link_text_1').html("Go To Surveys..!!");            
+            }        
+        });*/
+        
+    </script>
+
+
+{% endblock content %}

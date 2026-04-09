@@ -1,0 +1,686 @@
+{% extends 'BASE.html' %}
+
+{% block title %} Q&A Results {% endblock title %}    
+
+{% load quiz_custom_template_tags %}
+{% block content %}
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+    <!-- <script src="https://cdn.anychart.com/releases/8.0.1/js/anychart-core.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/8.0.1/js/anychart-pie.min.js"></script>
+
+    <div id="chart_container" style="width: 100%; height: 100%"></div>
+
+    <script>
+        anychart.onDocumentReady(function() {
+
+            // set the data
+            var data = [
+                {x: "White", value: 223553265},
+                {x: "Black or African American", value: 38929319},
+                {x: "American Indian and Alaska Native", value: 2932248},
+                {x: "Asian", value: 14674252},
+                {x: "Native Hawaiian and Other Pacific Islander", value: 540013},
+                {x: "Some Other Race", value: 19107368},
+                {x: "Two or More Races", value: 9009073}
+            ];
+          
+            // create the chart
+            var chart = anychart.pie();
+          
+            // set the chart title
+            chart.title("Population by Race for the United States: 2010 Census");
+          
+            // add the data
+            chart.data(data);
+          
+            // display the chart in the container
+            chart.container('chart_container');
+
+            // set legend position
+            chart.legend().position("right");
+            // set items layout
+            chart.legend().itemsLayout("vertical");
+            
+            chart.draw();
+          
+          });
+    </script> -->
+
+<!-- <br><br> -->
+<!-- <br><br>
+<center>
+    <h1>Hello!!</h1>
+</center> -->
+
+    {#% if qresult %#}
+    
+        {#% for q_res in qresult %#}
+
+            <!-- <div class="container" style="width: fit-content;" id="q-results"> -->
+            <!-- <span>{{ forloop.counter }}.</span> -->
+            {#% for q in q_res %#}
+
+                {#% if forloop.counter == 1 %#}
+                    <!-- <span> {{ q.poller }} </span>     -->
+                    <!-- <br> -->
+                {#% endif %#}
+                    
+                <!-- <span> {{ q.poller }} </span> -->
+                <!-- <br> -->
+            {#% endfor %#}
+            <!-- <br> -->
+            <!-- </div> -->
+                
+        {#% endfor %#}
+        
+    {#% endif %#}    
+
+
+
+    <script>
+        //var right_count = 0;
+        //var wrong_count = 0;
+        var myLoopCounter = 1;
+    </script>
+
+
+
+    {#% if correct_opt %#}
+    {% if qresult %}
+        <div class="container" style="margin-bottom: 20px; position: fixed; top: 79%; left: 2%;">
+            <!-- Button trigger modal -->
+            <a class="btn btn-dark pop-one" id="cheat_sheet" style="border-radius: 50%;" data-toggle="modal" data-target="#exampleModal">
+                <button type="button" class="btn btn-primary" style="border-radius: 50%; width: 45%; font-weight: bold; font-size: 20px; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;" data-toggle="modal" data-target="#exampleModal">
+                    Cheat <i class="fas fa-scroll"></i> Sheet
+                </button>
+            </a>
+        </div>
+    {% endif %}
+            
+
+    <!-- <div style="height: 100%; width: 100%; background: linear-gradient(to right bottom, rgb(48, 48, 255), red);  padding-top: 100px;"> -->
+    <div style="height: 100%; width: 100%; padding-top: 50px;">
+    {% if qresult %}            
+    
+        {% for q_res in qresult %}
+
+            <div class="container" 
+            style="width: 500px; 
+                background-image: linear-gradient(to right bottom, rgb(79, 233, 79), rgb(63, 61, 61) 50%, blue); 
+                border: 2px solid black; 
+                border-radius: 10px;
+                padding: 20px;
+                "                 
+            id="q-results">
+
+            <span style="font-weight: bold; font-size: 25px;"> Response No. <span style="color: white;">#{{ forloop.counter }}</span> <span class="percentage_class" id="{{ forloop.counter }}percent"> <i><span id="{{ forloop.counter }}percent_value"></span></i> </span> </span>
+            <!-- <a href="#" style="float: right; color: white;" onclick="alert('{{ q_res.id }}');"> Delete {{ q_res }} </a> -->
+            <br>            
+
+            <!--  Ordered List Here  -->
+            <ol style="margin-top: 10px;">
+
+            {% for q in q_res %}
+
+                {% if forloop.counter == 1 %}
+                    <div style="font-weight: bold; 
+                        border: 1px solid blue; 
+                        border-radius: 5px; 
+                        background-image: 
+                        linear-gradient(to right bottom, rgb(255, 177, 32), white);
+                        padding: 20px;  
+                        padding-left: 10px;
+                        margin-bottom: 25px;                  
+                    ">
+                        <span style="font-size: 19;"> Poller ID:  &nbsp;&nbsp;<span style="font-size: 17px; font-family: 'Courier New', Courier, monospace;">{{ q.poller }}</span> 
+                            <!-- <div class="dropdown"> -->
+                                <a class="dropdown pop-one" type="button" id="dropdownMenuButton" style="font-size: 17px; float: right;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <b><i class="fas fa-ellipsis-h"></i></b>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a href="{% url 'delete_response' q.quiz_title q.poller %}" style="color: black; padding: 10px;" class="click-pop"> <i style="padding-left: 10px;" class="fas fa-trash delete_res"> Delete </i> </span></a>
+                                </div>
+                            <!-- </div> -->
+                            <!-- #### How To Pass Two Arguments In Django Template 'url' tag below: -->
+                            <!-- <a href="{#% url 'delete_response' q.quiz_title q.poller %#}" style="color: black; float: right;" class="click-pop"> <i style="padding-left: 10px;" class="fas fa-trash delete_res"></i> </span></a> -->
+                        <br>                
+                    </div>
+                {% endif %}
+                    
+                <!-- <span> Response  {{ q.poller }} </span> -->
+                <!-- <ol> -->                    
+                        <!-- <li class="pop-one" style="font-weight: 800; color: white; margin-left: 50px;"> -->
+                        <li style="font-weight: 800; color: white; margin-left: 50px;">
+                            Answer : &nbsp;
+                            <span style="color: white">{{ q.correct_option }}</span>
+                            
+                                
+                            {% if q.correct_option == q.text_response %}
+                                <span style="color: rgb(74, 141, 74);"> <span id="opt_tick{{ q.id }}" style="font-size: larger;">( &#10003; )</span> </span>
+                            {% elif q.text_response is None %}
+                                <!-- {{ q.text_response }} -->
+                                <!-- <span style="color: white;"> <span id="opt_neutral" style="font-size: larger;">( - )</span> </span> &nbsp; -->
+                            {% elif q.text_response != 'NULL' %}
+                                <!-- {{ q.text_response }} -->
+                                <span style="color: rgb(255, 32, 32);"> <span id="opt_cross{{q.id}}" style="font-size: larger;">( &#10539; )</span> </span>
+                            {% endif %}                            
+
+                            <script>
+                                //alert('opt_tick{{q.id}}');
+                                $('#opt_tick{{ q.id }}').hide();
+                                $('#opt_cross{{ q.id }}').hide();
+                                
+                                $('#opt_tick{{ q.id }}').fadeIn(1500);
+                                $('#opt_cross{{ q.id }}').fadeIn(1500);
+                                //$('#opt_tick{{ q.id }}').slideDown(1500);
+                                //$('#opt_cross{{ q.id }}').slideDown(1500);
+                                //$('#opt_tick{{ q.id }}').css('transition', 'all 2.0s easy-in-out');
+                                //$('#opt_cross{{ q.id }}').css('transition', 'all 2.0s easy-in-out');                               
+
+
+                                // Collecting Right and Wrong Answers Stats
+                                //var temp_res = '{{ q.correct_option }}';
+                                //var temp_ans = '{{ q.text_response }}';
+                                //alert(temp_res);
+                                //alert(temp_ans);
+
+                                /*if ( temp_ans == temp_res ) {
+                                    right_count++;
+                                }
+                                else {
+                                    wrong_count++;
+                                }*/
+
+
+                            </script>
+
+                        </li>                    
+                <!-- </ol>                 -->                 
+            {% endfor %}
+            </ol>
+
+
+            <!-- <span> {{ q_res|get_right_ans }} </span>
+            <span> {{ q_res|get_wrong_ans }} </span> -->
+
+
+            <!-- ########   Google Chart  ######## -->
+
+            <!-- <div id="myPiechart" style="width: 900px; height: 500px;"></div> -->
+
+            <!-- <script>
+                //google.charts.load('current', {'packages':['corechart']});
+                google.charts.load('current', {'packages':['bar']});
+                google.charts.setOnLoadCallback(drawChart);
+
+                function drawChart() {
+
+                    var right_count = '{{ q_res|get_right_ans }}';
+                    var wrong_count = '{{ q_res|get_wrong_ans }}';
+                    //alert(right_count)                    ;
+                    //alert(wrong_count);
+
+
+                    var data = google.visualization.arrayToDataTable([
+                        ['Accuracy Status', 'Values Percentage'],
+                        ['Right Answers', right_count],
+                        ['Wrong Answers', wrong_count]
+                    ]);
+
+                    var options = {
+                    title: 'My Daily Activities',
+                    is3D: true,
+                    animation: {
+                        "startup": true
+                    }
+                    };
+
+                    //var chart = new google.visualization.PieChart(document.getElementById('myPiechart'));
+                    var chart = new google.charts.Bar(document.getElementById('myPiechart'));
+
+                    chart.draw(data, google.charts.Bar.convertOptions(options));
+                    //chart.draw(data, options);                    
+                }
+            </script> -->
+
+
+
+
+
+            <!-- ########  CanvasJs Chart  ######## -->
+
+            <!-- <span> {{ q_res|get_right_ans }} </span>
+            <span> {{ q_res|get_wrong_ans }} </span> -->
+
+            <!-- style="csty" == ?? -->
+
+            <!-- ######## Important "p" tags ####### -->
+            <p id='p1{{ forloop.counter }}' style="display: none;">{{ forloop.counter|get_right_ans_beta }}</p>
+            <p id='p2{{ forloop.counter }}'  style="display: none;">{{ forloop.counter|get_wrong_ans_beta }}</p>
+
+            <!-- <button class="btn btn-primary chart_btn" onclick="$('.class_chart').slideUp();  $('.chart_btn').hide();  $('.chart_btn2').show();"> Hide Statistics </button>
+            <button class="btn btn-primary chart_btn2" onclick="$('.class_chart').slideDown();  $('.chart_btn2').hide();  $('.chart_btn').show();"> Show Statistics </button> -->
+
+            <button class="btn btn-primary chart_btn" onclick="$('.class_chart').slideUp();  $('.chart_btn').hide();  $('.chart_btn2').show();"> Hide Statistics </button>
+            <!-- <button class="btn btn-primary chart_btn2"  onclick="$('.class_chart').slideDown();  $('.chart_btn2').hide();  $('.chart_btn').show();"> Show Statistics </button> -->
+            <button class="btn btn-primary chart_btn2" id="b2{{ forloop.counter }}"  onclick="myCanvasjs(this.id)" > Show Statistics </button>
+            <br>
+
+            <!-- <div id="{{ forloop.counter }}" class="class_chart" style="height: 20px; width: 10%;">  -->
+            <div id="{{ forloop.counter }}" class="class_chart" style="height: 370px; width: 100%;"> 
+                <!-- <button class="btn btn-primary show_chart_btn"><span>Statistics</span></button> -->
+            </div>
+
+            <script>
+
+                //$('#'+'{{ forloop.counter }}').hide();
+                //var right_count = 0;
+                //var wrong_count = 0;                
+
+                //$('.class_chart').hide();
+                /*function show_canvas_chart() {
+                    console.log('In Chart Func()');
+                    myLoopCounter = '{{ forloop.counter }}';                                        
+                    right_count = '{{ q_res|get_right_ans }}';
+                    wrong_count = '{{ q_res|get_wrong_ans }}';
+
+                    //var myId = '{{ forloop.counter }}';                    
+                    $('#'+'{{ forloop.counter }}').show();
+                    console.log('In Chart Func()-2');
+                }*/
+
+                $('.class_chart').hide();
+
+                $('.chart_btn').hide(); // Hide Chart
+                //$('.chart_btn2').hide(); // Show Chart
+
+                $('.percentage_class').hide();
+
+                //window.onload = function () {   
+                function myCanvasjs(curr_id) { 
+
+                    curr_id = String(curr_id);
+                    curr_id = String(curr_id.slice(2, ));                    
+                    
+                    //$('.class_chart').slideDown();
+                    $('.chart_btn2').hide();
+                    $('.chart_btn').show();
+                    
+                    //$('#class_chart').show();
+                    //style="height: 370px; width: 100%;"
+                    //$('.class_chart').toggle();
+                    console.log($('#'+curr_id).css('width'));
+                    console.log($('#'+curr_id).css('height'));
+                    //if ( $('#'+curr_id).css('width') == '100%' && $('#'+curr_id).css('height') == '370px' ) {                        
+                    if ( $('#'+curr_id).css('width') == '45.6px' || $('#'+curr_id).css('width') == '32px' && $('#'+curr_id).css('height') == '20px' ) {                                                                        
+                        //$('.chart_btn').show();
+                        $('#'+curr_id).css('width', '100%');
+                        $('#'+curr_id).css('height', '370px');                        
+                    }
+                    else {
+                        $('#'+curr_id).slideDown();
+                        //$('.class_chart').slideDown();
+                        //$('.chart_btn').hide();   
+                        //$('.chart_btn2').show();
+                        //$('.class_chart').toggle(2000);                        
+                        //$('.show_chart_btn').show(2000);
+                        //$('#'+curr_id).css('width', '10%');
+                        //$('#'+curr_id).css('height', '20px');    
+                    }
+
+                    //$('#'+curr_id).css('width', '100%');
+                    //$('#'+curr_id).css('height', '370px');
+
+                    //$('#b'+curr_id).show();
+                    //$('.class_chart').toggle();
+
+                    //$('.chart_btn').show();
+
+                    
+                    //var myLoopCounter = '{{ forloop.counter }}';
+                    var myLoopCounter = curr_id;
+                    //alert(myLoopCounter);
+                    //myLoopCounter = String(myLoopCounter);
+                    //myLoopCounter = String(myLoopCounter.slice(2, ));
+                    //alert(myLoopCounter+typeof myLoopCounter);
+                    //alert(curr_id);                                        
+                    //alert(myLoopCounter);
+
+                    //var right_count = document.getElementById('p1'+curr_id).innerHTML;
+                    //var wrong_count = document.getElementById('p2'+curr_id).innerHTML;
+                    var right_count = Number(document.getElementById('p1'+curr_id).innerHTML);
+                    var wrong_count = Number(document.getElementById('p2'+curr_id).innerHTML);
+                    //alert(typeof wrong_count);  // Type String
+                    var total = right_count + wrong_count;                    
+
+                    right_count = (right_count/total) * 100;
+                    wrong_count = (wrong_count/total) * 100;
+
+                    $('#'+curr_id+'percent_value').html('(' + String(right_count).slice(0, 5)+'%)');
+                    //$('#percent_value').css('color', 'white');
+                    $('#'+curr_id+'percent').fadeIn();
+                    
+                    //var right_count = Number('{{ q_res|get_right_ans }}');
+                    //var wrong_count = Number('{{ q_res|get_wrong_ans }}');
+
+                    //var right_count = Number('{{ forloop.counter|get_wrong_ans_beta }}');
+                    //var wrong_count = Number('{{ forloop.counter|get_wrong_ans_beta }}');
+                    
+                    var chart = new CanvasJS.Chart(String(myLoopCounter), {
+                        animationEnabled: true,
+                        theme: "light1", // "light1", "light2", "dark1", "dark2"
+                        title:{
+                            text: "Respondent's Statistics"
+                        },
+                        axisY: {
+                            title: "Accuracy"
+                        },
+                        data: [{        
+                            //type: "pie",
+                            type: "bar",
+                            startAngle: 240,
+                            yValueFormatString: "##0.00\" %\"",
+                            //showInLegend: true, 
+                            //legendMarkerColor: "grey",
+                            //legendText: "MMbbl = one million barrels",
+                            dataPoints: [      
+                                { y: right_count, label: "Right Answer" },
+                                { y: wrong_count,  label: "Wrong Answer" },                            
+                            ]
+                        }]
+                    });
+                
+                    chart.render();  
+                    //myLoopCounter++;                                                  
+                }
+
+            </script>
+
+
+
+            <br>
+            </div>
+            <br>
+                
+        {% endfor %} 
+        
+
+        
+        <!-- ############   Individual's Charts Toggler Btn   ################## -->
+    
+        <!-- <button class="btn btn-warning" style="position: fixed; top: 70%; left: 10%;" onclick="$('.class_chart').slideToggle(); $('#piechart').slideToggle();">Toggle Statistics</button> -->
+        <button class="btn btn-warning pop-one" style="position: fixed; top: 90%; left: 86%; font-weight: bold; font-family: cursive;" onclick="TheChartToggle()">
+            <i class="fas fa-toggle-off fa-lg" id="tg1"></i>
+                <i class="fas fa-toggle-on fa-lg" id="tg2"></i>
+                <span>Toggle Statistics</span>
+        </button>
+
+            <script>
+
+                $('#tg2').hide();
+
+                function TheChartToggle() {
+                    /*if( $(".class_chart").is(":visible") ){
+                        $(".class_chart").slideUp();
+                        alert("Class_Chart  is visible.");
+                    } 
+                    else{
+                        $(".class_chart").slideDown();
+                        alert("Class_Chart is hidden.");
+                    }*/
+                    
+                    if( $("#piechart").is(":visible") ){                
+                        $("#piechart").slideUp();
+                        $(".class_chart").slideUp();
+
+                        $('#tg1').hide();
+                        $('#tg2').show();
+
+                        $('.chart_btn2').show();    // Show Individual Chart Button
+                        $('.chart_btn').hide();     // Hide Individual Chart Button
+                        //alert("Class_Chart  is visible.");
+                    } 
+                    else{                    
+                        /*if( $(".class_chart").is(":visible") ){
+                            $(".class_chart").slideUp();                        
+                        }*/                     
+
+                        $('#tg2').hide();
+                        $('#tg1').show();
+
+                        $("#piechart").slideDown();                
+                        //$(".class_chart").slideDown();
+                        //alert("Class_Chart  is hidden.");
+                    }
+                }
+            </script>
+            
+
+    {% else %}
+
+        <div style="width: 30%; height: 30%; position: fixed; background-color: white; z-index: 9; top: 9%;"></div>        
+
+        <div style="margin-top: 80px; font-family: cursive; font-size: 23px; font-weight: bold;">
+            <span style="margin-left: 520px; padding-top: 300px; text-decoration: underline red;"> No Responses Recorded For This Survey Till Now !! </span>            
+        </div>
+                
+        <button type="button" class="btn btn-outline-primary btn-lg" onclick="goto_survey()" style="position: relative; left: 44.5%; margin-top: 40px; font-family: monospace; border: 2px #0275d8 solid;">
+            <span id="ref_survey" style="font-weight: bold;"></span>
+            <script>                
+                // alert(location.href);
+                var url_length = location.href.length;
+                var survey_title = location.href.slice(39,url_length-1);
+                // alert(location.href.slice(39,url_length-1));
+                // alert(url_length);
+                $('#ref_survey').html('Take This Survey Now!');
+                
+                function goto_survey() {
+                    location.href = 'http://127.0.0.1:8080/quiz/show_quiz/' + survey_title;
+                }
+            </script>
+        </button>        
+
+    {% endif %}    
+    
+    
+     
+
+
+    <!-- ######   PIE-CHART Visualization   ###### -->
+
+    {#% if chart_wrong %#}
+        <!-- <div id="piechart" style="width: 900px; height: 500px;"></div> -->
+        <div id="piechart" class="pop-half" style="position: fixed; left: 0%; top: 9.8%; width: 500px; height: 400px; color: rgb(136, 136, 136);"></div>        
+
+        <script type="text/javascript">            
+            
+            //google.charts.load('current', {'packages':['corechart']});
+            google.charts.load('current', {'packages':['corechart', 'bar']});
+            google.charts.setOnLoadCallback(drawChart);            
+
+            //$('#piechart').hide();
+            //$('#piechart').slideDown(1000);
+      
+            function drawChart() {                
+      
+              /*var data = google.visualization.arrayToDataTable([
+                ['Task', 'Hours per Day'],
+                ['Work',     11],
+                ['Eat',      2],
+                ['Commute',  2],
+                ['Watch TV', 2],
+                ['Sleep',    7]
+              ]); */              
+
+              var myCorrect = Number('{{ chart_correct }}');
+              var myWrong = Number('{{ chart_wrong }}');
+              //alert(myCorrect);
+
+              var data = google.visualization.arrayToDataTable([
+                ['Accuracy', 'Values'],
+                ['Correct',     myCorrect],
+                ['Wrong',      myWrong]                
+              ]);
+              
+      
+              var options = {
+                title: "Total Response Accuracy",
+                fontSize: 18,
+                //backgroundColor: 'gray', // This alone also works.
+                backgroundColor: {
+                    //fill: 'yellow',
+                    fill: 'white',
+                },            
+                //is3D: true,
+                //pieHole: 0.25,
+                animation: {                    
+                    duration: 2000,
+                    easing: 'out',
+                    //"startup": true,
+                    //startup: true,
+                },
+
+                //vAxis: {minValue:0, maxValue:1000},
+
+                slices: {
+                    //0: { color: '#004411' },
+                    //1: { color: 'red' },
+                    //0: {offset: 0.1},
+                    //1: {offset: 0.1},
+                },
+
+                chartArea: {
+                    width: 350,
+                    height: 300,
+                },
+
+              };
+      
+              var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+              //var chart = new google.visualization.BarChart(document.getElementById('piechart'));
+              
+              chart.draw(data, options);
+
+              /*setTimeout(function() {                          
+                chart.draw(data, options);
+                $('#piechart').hide();        
+                $('#piechart').slideDown(2000);
+              }, 3000);*/
+              
+            }
+
+          </script>
+
+    {#% endif %#}
+        
+
+
+
+
+            <!--  Correct Option Chart MODAL  -->
+            <!-- Cheat Sheet Modal -->
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog glass-morph" style="left: 33.5%; top: 11%;">
+      <div class="modal-content glass-morph">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel"><b style="margin-left: 160px;"><i class="far fa-copy"></i> Answer Sheet</b></h5>
+          <button type="button" class="close btn btn-danger" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" style="color: white;">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body glass-morph" id="ans_body">
+          
+            {% if correct_opt %}
+                <ol id="ans_content">
+                    {% for c_opt in correct_opt %}                        
+                        <!-- <li class="pop-one" style="font-weight: bold; font-size: 20px; font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">  -->
+                        <li style="font-weight: bold; font-size: 20px; font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;"> 
+                            
+                            <span style="color: green;"> {{ c_opt.question|upper_first_letter|add_ques_mark }} </span> <br>
+                            {% if c_opt.correct_option != 'NULL' %}                                
+                                <i class="far fa-dot-circle fa-sm"></i>
+                                 <span>Answer: 
+                                    <span style="color: red;">
+                                        {{ c_opt.correct_option }} 
+
+                                        <span style="color: #0275d8;">
+                                            {% if c_opt.correct_option == '1' %}
+                                                {% if c_opt.option_one != 'NULL' %}
+                                                    ({{ c_opt.option_one }})
+                                                {% endif %}                                                                                            
+                                            {% elif c_opt.correct_option == '2' %}
+                                                {% if c_opt.option_two != 'NULL' %}
+                                                    ({{ c_opt.option_two }})
+                                                {% endif %}
+                                            {% elif c_opt.correct_option == '3' %}
+                                                {% if c_opt.option_three != 'NULL' %}
+                                                    ({{ c_opt.option_three }})
+                                                {% endif %}
+                                            {% elif c_opt.correct_option == '4' %}
+                                                {% if c_opt.option_four != 'NULL' %}
+                                                    ({{ c_opt.option_four }})
+                                                {% endif %}
+                                            {% elif c_opt.correct_option == '5' %}
+                                                {% if c_opt.option_five != 'NULL' %}
+                                                    ({{ c_opt.option_five }})
+                                                {% endif %}
+                                            {% elif c_opt.correct_option == '6' %}
+                                                {% if c_opt.option_six != 'NULL' %}
+                                                    ({{ c_opt.option_six }})
+                                                {% endif %}
+                                            {% endif %}
+                                        </span>
+                                            
+                                    </span> 
+                                </span>
+                            {% else %}                            
+                                <i class="far fa-dot-circle fa-sm"></i> <span>Answer: <span style="color: red;">-----</span> </span>
+                            {% endif %}
+
+                        </li>            
+                    {% endfor %}
+                </ol>
+                    
+            {% endif %}
+              
+        </div>
+        <div class="modal-footer" style="background-color: black;">
+          <button type="button" class="btn btn-info" style="font-weight: bold; font-size: 20px; width: 100%; background: linear-gradient(to left top, red, yellow); outline: none; border: none; font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; letter-spacing: 2px;" data-dismiss="modal">Close</button>          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- </div> -->
+
+
+
+  <!-- #######  Scripts Are Here  ###### -->
+
+  <script>
+
+    $('#ans_content').hide();
+    //$('#opt_tick').hide();
+    //$('#opt_cross').hide();
+
+    $('#cheat_sheet').click(function() {
+        $('#ans_content').fadeIn(1200);        
+    });
+
+    /*$(document).ready(function() {    /////
+        $('#opt_tick').fadeIn(3000);
+        $('#opt_cross').fadeIn(3000);
+    });*/
+
+
+  </script>
+
+
+
+{% endblock content %}

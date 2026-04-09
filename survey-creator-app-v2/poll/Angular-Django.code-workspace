@@ -1,0 +1,28 @@
+{
+	"folders": [
+		{
+			"path": "..\\..\\..\\Angular Projects"
+		},
+		{
+			"path": "..\\.."
+		}
+	],
+	"settings": {
+		"sqltools.connections": [
+			{
+				"mysqlOptions": {
+					"authProtocol": "default"
+				},
+				"previewLimit": 200,
+				"server": "localhost",
+				"port": 3306,
+				"driver": "MySQL",
+				"name": "Testing",
+				"database": "mohitdb",
+				"username": "mohit",
+				"password": "mohit#@6023",
+				"connectionTimeout": 2
+			}
+		]
+	}
+}
