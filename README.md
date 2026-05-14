@@ -27,6 +27,14 @@ This website features community opinion polls, shareable surveys, results dashbo
 # **A look at some visual hightlight of the web application: 🖥️**
 
 
+## Video Demonstration:🎦
+
+
+https://github.com/user-attachments/assets/9d8107de-9952-4b9a-88ff-c2e04b1da9a9
+
+
+
+
 ### Survey(s) Home:
 
 <img width="480" height="257" style="display:inline;" alt="Survey Home" src="https://github.com/user-attachments/assets/4dc03b70-58aa-47ee-b4cc-bf483e0ad917" />
