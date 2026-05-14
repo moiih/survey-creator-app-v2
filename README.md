@@ -30,10 +30,10 @@ This website features community opinion polls, shareable surveys, results dashbo
 
 - ### Video Demonstration: 🎦
 
-https://github.com/user-attachments/assets/4cebf064-c58e-4078-813c-e21604293c63
+https://github.com/user-attachments/assets/e775d4d6-83cb-481f-8ce2-8cab8254fa64
 
 
-
+<br><br>
 
 ### Survey(s) Home:
 
@@ -41,9 +41,9 @@ https://github.com/user-attachments/assets/4cebf064-c58e-4078-813c-e21604293c63
 
 <img width="480" height="257" style="display:inline;" alt="Survey Home-Expanded" src="https://github.com/user-attachments/assets/0bb322e9-a5be-4716-a20e-e7ae01ad5c7e" />
 
-<br><br>
+<br>
 
-### Survey Creation Interface:
+- ### Survey Creation Interface:
 
 <img width="480" height="257" style="display:inline;" alt="Screenshot (3447)" src="https://github.com/user-attachments/assets/c70a48fd-304e-41d0-846c-48c58693aa4d" />
 
@@ -51,7 +51,7 @@ https://github.com/user-attachments/assets/4cebf064-c58e-4078-813c-e21604293c63
 
 <br><br>
 
-### Survey Example:
+- ### Survey Example:
 
 <img width="1920" height="1033" alt="Screenshot (3428)(1)" src="https://github.com/user-attachments/assets/bbb3293e-cc88-498f-88bb-878cef4151f2" />
 
@@ -59,7 +59,7 @@ https://github.com/user-attachments/assets/4cebf064-c58e-4078-813c-e21604293c63
 
 <br><br>
 
-### Results Dashboard:
+- ### Results Dashboard:
 
 
 <img width="1920" height="1030" alt="Screenshot (3440)(1)" src="https://github.com/user-attachments/assets/a1b9f3c0-8710-4228-93bd-418e221e0997" />
@@ -70,7 +70,7 @@ https://github.com/user-attachments/assets/4cebf064-c58e-4078-813c-e21604293c63
 
 <br><br>
 
-### CheatSheet (Survey Answers) Private to Survey Owners:
+- ### CheatSheet (Answer Sheet) Private to Survey Owners:
 
 <img width="1920" height="1025" alt="Screenshot (3443)(1)" src="https://github.com/user-attachments/assets/993dc3db-9273-4932-86a2-20468dd7950b" />
 
@@ -78,7 +78,7 @@ https://github.com/user-attachments/assets/4cebf064-c58e-4078-813c-e21604293c63
 
 <br><br>
 
-### Image Viewer in Action:
+- ### Image Viewer in Action:
 
 <img width="1920" height="1030" alt="Screenshot (3436)(1)" src="https://github.com/user-attachments/assets/67010ffb-d7a2-4a4e-b470-5bafbfa743f5" />
 
